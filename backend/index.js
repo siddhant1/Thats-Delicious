@@ -15,12 +15,11 @@ dotenv.config();
 mongoose.connect(
   `mongodb://${process.env.DB_USERNAME}:${
     process.env.DB_PASSWORD
-  }@ds161740.mlab.com:61740/restaurant"`,
+  }@ds161740.mlab.com:61740/restaurant`,
   () => {
     console.log("Connected to databse");
   }
 );
-mongoose.Promise = global.Promise;
 
 //Parsing middleware
 app.use(bodyparser.json());

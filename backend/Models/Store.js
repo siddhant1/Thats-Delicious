@@ -13,12 +13,13 @@ function validateStore(store) {
   const schema = {
     name: Joi.string().required(),
     description: Joi.string().required(),
-    tags: Joi.array().items(Joi.string())
+    tags: Joi.array()
+      .items(Joi.string())
+      .required()
   };
   return Joi.validate(store, schema);
 }
 
-const Store = mongoose.model("Store", StoreSchema);
 StoreSchema.pre("save", function() {
   if (!this.isModified("name")) {
     next();
@@ -27,5 +28,6 @@ StoreSchema.pre("save", function() {
   this.slug = slug(this.name);
   next();
 });
-module.exports.validate = validateStore;
-module.exports.Store = Store;
+
+exports.validate = validateStore;
+exports.Store = mongoose.model("store", StoreSchema);
