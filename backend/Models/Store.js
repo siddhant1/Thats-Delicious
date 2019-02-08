@@ -6,7 +6,24 @@ const StoreSchema = new mongoose.Schema({
   name: { type: String, trim: true, required: true },
   slug: { type: String },
   description: { type: String, trim: true },
-  tags: [{ type: String }]
+  tags: [{ type: String }],
+  created: { type: Date, default: Date.now() },
+  location: {
+    type: {
+      type: String,
+      default: "Point"
+    },
+    coordinates: [
+      {
+        type: Number,
+        required: true
+      }
+    ],
+    address: {
+      type: String,
+      required: true
+    }
+  }
 });
 
 function validateStore(store) {
@@ -15,7 +32,11 @@ function validateStore(store) {
     description: Joi.string().required(),
     tags: Joi.array()
       .items(Joi.string())
-      .required()
+      .required(),
+    location: Joi.object({
+      coordinates: Joi.array().required(),
+      address: Joi.string.required()
+    }).required()
   };
   return Joi.validate(store, schema);
 }
