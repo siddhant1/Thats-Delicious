@@ -41,12 +41,12 @@ function validateStore(store) {
   return Joi.validate(store, schema);
 }
 
-StoreSchema.pre("save", function() {
+StoreSchema.pre("save", async function() {
   if (!this.isModified("name")) {
     next();
     return;
   }
-  this.slug = slug(this.name);
+  this.slug = slug(this.name + Date.now());
   next();
 });
 
