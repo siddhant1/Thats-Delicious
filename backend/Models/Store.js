@@ -41,6 +41,14 @@ function validateStore(store) {
   return Joi.validate(store, schema);
 }
 
+StoreSchema.statics.getTagsList = function() {
+  return this.aggregate([
+    { $unwind: "$tags" },
+    { $group: { _id: "$tags", count: { $sum: 1 } } },
+    { $sort: { count: -1 } }
+  ]);
+};
+
 StoreSchema.pre("save", async function() {
   if (!this.isModified("name")) {
     next();

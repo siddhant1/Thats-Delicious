@@ -6,12 +6,19 @@ Router.get("/", async (req, res) => {
   res.json(stores);
 });
 
+Router.get("/tags", async (req, res) => {
+  const tags = await Store.getTagsList();
+  res.json(tags);
+});
+
+Router.get('/tags/:tag',async (req,res)=>{
+    
+})
+
 Router.get("/:id", async (req, res) => {
-  try {
-    const store = await Store.findById(id);
-  } catch (ex) {
-    res.status(400).send(ex);
-  }
+  const store = await Store.findById(req.params.id);
+
+
   if (!store) {
     res.status(404).send("Store with the given id is not found");
     return;
